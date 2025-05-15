@@ -2,8 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Simple Chat App</title>
+    <!-- Firebase JS SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
@@ -33,6 +34,7 @@
         padding: 10px;
         margin-top: 5px;
         width: 100%;
+        box-sizing: border-box;
       }
     </style>
   </head>
@@ -44,39 +46,43 @@
     <button onclick="sendMessage()">Send</button>
 
     <script>
-      // Firebase configuration (replace with your own later)
-
+      // তোমার Firebase প্রোজেক্টের configuration
       const firebaseConfig = {
         apiKey: "AIzaSyBgJpInxxMm2aA_tilbqHPDWIBhDbFh1YE",
         authDomain: "kdc-students-chat.firebaseapp.com",
-        databaseURL: "https://kdc-students-chat-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        databaseURL:
+          "https://kdc-students-chat-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "kdc-students-chat",
         storageBucket: "kdc-students-chat.firebasestorage.app",
         messagingSenderId: "854529306763",
         appId: "1:854529306763:web:e6a1e0a2deaf4da53be48e",
-        measurementId: "G-761G5WHR1X"
+        measurementId: "G-761G5WHR1X",
       };
-    
+
+      // Firebase init
       firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
 
-
       const chatBox = document.getElementById("chat-box");
 
-      // Listen for new messages
+      // নতুন মেসেজ আসলে সেটা দেখাবে
       db.ref("messages").on("child_added", (snapshot) => {
         const data = snapshot.val();
         const msg = document.createElement("div");
         msg.className = "message";
         msg.textContent = `${data.name}: ${data.text}`;
         chatBox.appendChild(msg);
-        chatBox.scrollTop = chatBox.scrollHeight;
+        chatBox.scrollTop = chatBox.scrollHeight; // সবশেষ মেসেজ দেখাবে
       });
 
       function sendMessage() {
-        const name = document.getElementById("username").value;
-        const text = document.getElementById("message").value;
-        if (!name || !text) return alert("Please fill all fields");
+        const name = document.getElementById("username").value.trim();
+        const text = document.getElementById("message").value.trim();
+        if (!name || !text) {
+          alert("Please fill all fields");
+          return;
+        }
+        // ডাটাবেজে মেসেজ জমা দাও
         db.ref("messages").push({ name, text });
         document.getElementById("message").value = "";
       }
