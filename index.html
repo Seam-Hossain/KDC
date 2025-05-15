@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Chat App</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f1f1f1;
+      }
+      #chat-box {
+        width: 100%;
+        max-width: 500px;
+        height: 400px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+        background: white;
+        margin-bottom: 10px;
+      }
+      .message {
+        margin: 5px 0;
+        padding: 5px;
+        border-radius: 4px;
+        background-color: #e0f7fa;
+      }
+      input,
+      button {
+        padding: 10px;
+        margin-top: 5px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Simple Chat (Firebase)</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="username" placeholder="Your Name" />
+    <input type="text" id="message" placeholder="Type a message" />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+      // Firebase configuration (replace with your own later)
+      const firebaseConfig = {
+        apiKey: "AIzaSyDkw_p9zGpJWYB2A9A_lUe0ENR1toUVp4A",
+        authDomain: "sample-chat-bd.firebaseapp.com",
+        projectId: "sample-chat-bd",
+        storageBucket: "sample-chat-bd.appspot.com",
+        messagingSenderId: "240275116126",
+        appId: "1:240275116126:web:bfdca1854568bb2088b61d",
+        databaseURL: "https://sample-chat-bd-default-rtdb.firebaseio.com",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.database();
+
+      const chatBox = document.getElementById("chat-box");
+
+      // Listen for new messages
+      db.ref("messages").on("child_added", (snapshot) => {
+        const data = snapshot.val();
+        const msg = document.createElement("div");
+        msg.className = "message";
+        msg.textContent = `${data.name}: ${data.text}`;
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+
+      function sendMessage() {
+        const name = document.getElementById("username").value;
+        const text = document.getElementById("message").value;
+        if (!name || !text) return alert("Please fill all fields");
+        db.ref("messages").push({ name, text });
+        document.getElementById("message").value = "";
+      }
+    </script>
+  </body>
+</html>
