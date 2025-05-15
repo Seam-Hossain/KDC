@@ -45,18 +45,21 @@
 
     <script>
       // Firebase configuration (replace with your own later)
-      const firebaseConfig = {
-        apiKey: "AIzaSyDkw_p9zGpJWYB2A9A_lUe0ENR1toUVp4A",
-        authDomain: "sample-chat-bd.firebaseapp.com",
-        projectId: "sample-chat-bd",
-        storageBucket: "sample-chat-bd.appspot.com",
-        messagingSenderId: "240275116126",
-        appId: "1:240275116126:web:bfdca1854568bb2088b61d",
-        databaseURL: "https://sample-chat-bd-default-rtdb.firebaseio.com",
-      };
 
+      const firebaseConfig = {
+        apiKey: "AIzaSyBgJpInxxMm2aA_tilbqHPDWIBhDbFh1YE",
+        authDomain: "kdc-students-chat.firebaseapp.com",
+        databaseURL: "https://kdc-students-chat-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "kdc-students-chat",
+        storageBucket: "kdc-students-chat.firebasestorage.app",
+        messagingSenderId: "854529306763",
+        appId: "1:854529306763:web:e6a1e0a2deaf4da53be48e",
+        measurementId: "G-761G5WHR1X"
+      };
+    
       firebase.initializeApp(firebaseConfig);
       const db = firebase.database();
+
 
       const chatBox = document.getElementById("chat-box");
 
